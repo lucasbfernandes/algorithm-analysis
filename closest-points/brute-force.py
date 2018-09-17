@@ -21,21 +21,26 @@ def getPointDistance(pointA, pointB):
 
 def getShortestDistanceBetweenPoints(pointsList):
 	minimum = INFINITY
+	minimumPoints = None
 	for i in range(len(pointsList)):
 		for j in range(i + 1, len(pointsList)):
 			if getPointDistance(pointsList[i], pointsList[j]) < minimum:
+				minimumPoints = (pointsList[i], pointsList[j])
 				minimum = getPointDistance(pointsList[i], pointsList[j])
-	return minimum
+	return (minimumPoints, minimum)
 
 def main():
 	numberOfPoints = int(input())
 	pointsList = generatePoints(numberOfPoints)
-	shortestDistance = getShortestDistanceBetweenPoints(pointsList)
+	shortestDistanceTuple = getShortestDistanceBetweenPoints(pointsList)
 
 	for i in range(len(pointsList)):
 		print(pointsList[i].x, pointsList[i].y)
 
-	print("Shortest distance: ", shortestDistance)
+	print("Shortest distance points: ")
+	print(shortestDistanceTuple[0][0].x, shortestDistanceTuple[0][0].y)
+	print(shortestDistanceTuple[0][1].x, shortestDistanceTuple[0][1].y)
+	print("Shortest distance: ", shortestDistanceTuple[1])
 
 if __name__ == '__main__':
 	main()
