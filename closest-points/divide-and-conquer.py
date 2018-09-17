@@ -19,35 +19,43 @@ def getPointDistance(pointA, pointB):
 		(pointA.y - pointB.y) * (pointA.y - pointB.y)
 	)
 
-def getMiddlePointsMinimum(middlePoints, minimum):
-	for i in range(len(middlePoints)):
-		for j in range(i + 1, len(middlePoints)):
-			if (middlePoints[j].y - middlePoints[i].y) >= minimum:
+def getMiddlePointsMinimum(middlePointsList, minimum):
+	minimumPoints = None
+	for i in range(len(middlePointsList)):
+		for j in range(i + 1, len(middlePointsList)):
+			if (middlePointsList[j].y - middlePointsList[i].y) >= minimum:
 				break
-			elif getPointDistance(middlePoints[i], middlePoints[j]) < minimum:
-				minimum = getPointDistance(middlePoints[i], middlePoints[j])
-	return minimum
+			elif getPointDistance(middlePointsList[i], middlePointsList[j]) < minimum:
+				minimumPoints = (middlePointsList[i], middlePointsList[j])
+				minimum = getPointDistance(middlePointsList[i], middlePointsList[j])
+	return (minimumPoints, minimum)
 
-def getMiddlePoints(ySortedList, left, right, middlePoint, minimum):
-	middlePoints = []
+def getMiddlePointsList(ySortedList, left, right, middlePoint, minimum):
+	middlePointsList = []
 	for i in range(left, right):
 		if (abs(ySortedList[i].x - middlePoint.x) < minimum):
-			middlePoints.append(ySortedList[i])
-	return middlePoints
+			middlePointsList.append(ySortedList[i])
+	return middlePointsList
 
 def computeShortestDistanceBetweenPoints(xSortedList, ySortedList, left, right):
 	if abs(right - left) == 2:
-		return getPointDistance(ySortedList[left], ySortedList[right - 1])
+		return ((ySortedList[left], ySortedList[right - 1]), getPointDistance(ySortedList[left], ySortedList[right - 1]))
 
 	if abs(right - left) == 1:
-		return INFINITY
+		return ((ySortedList[left], ySortedList[left]), INFINITY)
 
 	middle = (left + right) / 2
-	leftMinimum = computeShortestDistanceBetweenPoints(xSortedList, ySortedList, left, middle)
-	rightMinimum = computeShortestDistanceBetweenPoints(xSortedList, ySortedList, middle, right)
+	(leftPoints, leftMinimum) = computeShortestDistanceBetweenPoints(xSortedList, ySortedList, left, middle)
+	(rightPoints, rightMinimum) = computeShortestDistanceBetweenPoints(xSortedList, ySortedList, middle, right)
+
 	minimum = min(leftMinimum, rightMinimum)
-	middlePoints = getMiddlePoints(ySortedList, left, right, xSortedList[middle], minimum)
-	return min(minimum, getMiddlePointsMinimum(middlePoints, minimum))
+	minimumPoints = leftPoints if (minimum == leftMinimum) else rightPoints
+
+	middlePointsList = getMiddlePointsList(ySortedList, left, right, xSortedList[middle], minimum)
+	(middlePoints, middleMinimum) = getMiddlePointsMinimum(middlePointsList, minimum)
+	minimumPoints = minimumPoints if (min(minimum, middleMinimum) == minimum) else middlePoints
+
+	return (minimumPoints, min(minimum, middleMinimum))
 
 def getShortestDistanceBetweenPoints(pointsList):
 	xSortedList = sorted(pointsList, key=lambda point: point.x, reverse=False)
@@ -57,12 +65,15 @@ def getShortestDistanceBetweenPoints(pointsList):
 def main():
 	numberOfPoints = int(input())
 	pointsList = generatePoints(numberOfPoints)
-	shortestDistance = getShortestDistanceBetweenPoints(pointsList)
+	shortestDistanceTuple = getShortestDistanceBetweenPoints(pointsList)
 
 	for i in range(len(pointsList)):
 		print(pointsList[i].x, pointsList[i].y)
 
-	print("Shortest distance: ", shortestDistance)
+	print("Shortest distance points: ")
+	print(shortestDistanceTuple[0][0].x, shortestDistanceTuple[0][0].y)
+	print(shortestDistanceTuple[0][1].x, shortestDistanceTuple[0][1].y)
+	print("Shortest distance: ", shortestDistanceTuple[1])
 
 if __name__ == '__main__':
 	main()
