@@ -2,6 +2,7 @@
 
 import random
 import math
+import sys
 
 INFINITY = 20000000
 
@@ -62,18 +63,35 @@ def getShortestDistanceBetweenPoints(pointsList):
 	ySortedList = sorted(pointsList, key=lambda point: point.y, reverse=False)
 	return computeShortestDistanceBetweenPoints(xSortedList, ySortedList, 0, len(pointsList))
 
-def main():
+def getStdinPointsList():
+	pointsList = []
+	for line in sys.stdin:
+		splittedLine = str.split(line)
+		pointsList.append(Point(int(splittedLine[0]), int(splittedLine[1])))
+	return pointsList
+
+def getRandomPointsList():
 	numberOfPoints = int(input())
-	pointsList = generatePoints(numberOfPoints)
+	return generatePoints(numberOfPoints)
+
+def getPointsList():
+	#return getRandomPointsList()
+	return getStdinPointsList()
+
+def main():
+	pointsList = getPointsList()
 	shortestDistanceTuple = getShortestDistanceBetweenPoints(pointsList)
 
+	print("Points:")
 	for i in range(len(pointsList)):
 		print(pointsList[i].x, pointsList[i].y)
 
-	print("Shortest distance points: ")
+	print("\nShortest distance points:")
 	print(shortestDistanceTuple[0][0].x, shortestDistanceTuple[0][0].y)
 	print(shortestDistanceTuple[0][1].x, shortestDistanceTuple[0][1].y)
-	print("Shortest distance: ", shortestDistanceTuple[1])
+
+	print("\nShortest distance:")
+	print(shortestDistanceTuple[1])
 
 if __name__ == '__main__':
 	main()
