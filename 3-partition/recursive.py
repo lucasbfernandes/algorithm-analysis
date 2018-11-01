@@ -75,17 +75,17 @@ def main():
     total_sum = numpy.sum(input_integers)
     p_sum = total_sum / 3
 
-    print("Total sum: {sum}\n".format(sum=total_sum))
-    print("3-partition sum: {sum}\n".format(sum=p_sum))
-    print("Input array: {array}\n".format(array=input_integers))
-
     if total_sum % 3 != 0:
         print("Total sum is not divisible by 3")
     else:
+        print("Total sum: {sum}\n".format(sum=total_sum))
+        print("3-partition sum: {sum}\n".format(sum=p_sum))
+        print("Input array: {array}\n".format(array=input_integers))
+
         is_solvable = solve_rec(0, 0, 0, p_sum, input_integers)
         answer = find_answer(0, 0, 0, p_sum, input_integers, get_initial_answer())
 
-        print("Answer: {answer}\n".format(answer=get_answer_string(is_solvable)))
+        print("Solvable: {answer}\n".format(answer=get_answer_string(is_solvable)))
         print("Bucket #1: {bucket}\n".format(bucket=answer[0]))
         print("Bucket #2: {bucket}\n".format(bucket=answer[1]))
         print("Bucket #3: {bucket}\n".format(bucket=answer[2]))
