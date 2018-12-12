@@ -17,8 +17,22 @@ struct item {
 typedef struct item Item;
 typedef struct block Block;
 
-void runFirstFit(Item* items, int itemsLength, Block* blocks) {
+int isBlockEligible(Item item, Block block) {
+    return (block.totalOccupied + item.totalWeight) <= block.totalCapacity;
+}
 
+int runFirstFit(Item* items, int itemsLength, Block* blocks, int blocksLength) {
+    int usedBlocks = 0;
+    for (int i = 0; i < itemsLength; i++) {
+        for (int j = 0; j < blocksLength; j++) {
+            if (isBlockEligible(items[i], blocks[j])) {
+                blocks[j].totalOccupied += items[i].totalWeight;
+                usedBlocks = usedBlocks >= (j + 1) ? usedBlocks : (j + 1);
+                break;
+            }
+        }
+    }
+    return usedBlocks;
 }
 
 void readBlocks(Block* blocks, int* blocksLength, int* blocksCapacity, int itemsSum) {
@@ -50,13 +64,8 @@ int main() {
     readItems(items, &itemsLength, &itemsSum);
     readBlocks(blocks, &blocksLength, &blocksCapacity, itemsSum);
 
-    for (int i = 0; i < itemsLength; i++) {
-        printf("%d /", items[i].totalWeight);
-    }
-
-    for (int i = 0; i < blocksLength; i++) {
-        printf("%d %d /", blocks[i].totalCapacity, blocks[i].totalOccupied);
-    }
+    int usedBlocks = runFirstFit(items, itemsLength, blocks, blocksLength);
+    printf("Number of used blocks: %d\n", usedBlocks);
 
     return 0;
 }
