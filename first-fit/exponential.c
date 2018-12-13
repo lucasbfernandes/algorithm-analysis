@@ -3,7 +3,7 @@
 #include <math.h>
 
 int MAX_ITEMS = 100000;
-int MAX_BLOCKS = 100000;
+int MAX_BLOCKS = MAX_ITEMS;
 int APP_INFINITY = 20000000;
 
 struct block {
