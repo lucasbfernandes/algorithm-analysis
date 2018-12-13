@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 int MAX_ITEMS = 100000;
-int MAX_BLOCKS = MAX_ITEMS;
+int MAX_BLOCKS = 100000;
 
 struct block {
     int totalCapacity;
