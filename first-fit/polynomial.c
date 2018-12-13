@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 int MAX_ITEMS = 100000;
 int MAX_BLOCKS = 100000;
@@ -65,7 +64,7 @@ int main() {
     readBlocks(blocks, &blocksLength, &blocksCapacity, itemsLength);
 
     int usedBlocks = runFirstFit(items, itemsLength, blocks, blocksLength);
-    printf("Number of used blocks: %d\n", usedBlocks);
+    printf("SOLUTION: %d BLOCKS\n", usedBlocks);
 
     return 0;
 }
