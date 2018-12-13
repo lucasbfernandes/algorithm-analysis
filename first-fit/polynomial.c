@@ -35,9 +35,9 @@ int runFirstFit(Item* items, int itemsLength, Block* blocks, int blocksLength) {
     return usedBlocks;
 }
 
-void readBlocks(Block* blocks, int* blocksLength, int* blocksCapacity, int itemsSum) {
+void readBlocks(Block* blocks, int* blocksLength, int* blocksCapacity, int itemsLength) {
     scanf("%d", blocksCapacity);
-    *blocksLength = ceil((double)itemsSum / (double)*blocksCapacity);
+    *blocksLength = itemsLength;
     for (int i = 0; i < *blocksLength; i++) {
         blocks[i].totalCapacity = *blocksCapacity;
         blocks[i].totalOccupied = 0;
@@ -62,7 +62,7 @@ int main() {
     Block blocks[MAX_BLOCKS];
 
     readItems(items, &itemsLength, &itemsSum);
-    readBlocks(blocks, &blocksLength, &blocksCapacity, itemsSum);
+    readBlocks(blocks, &blocksLength, &blocksCapacity, itemsLength);
 
     int usedBlocks = runFirstFit(items, itemsLength, blocks, blocksLength);
     printf("Number of used blocks: %d\n", usedBlocks);
